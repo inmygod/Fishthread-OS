@@ -1,3 +1,3 @@
 export default function PurchasePage() {
-  return <h2>Purchase</h2>;
+  return <h1>ক্রয়</h1>;
 }
