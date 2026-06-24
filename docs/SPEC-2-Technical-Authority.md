@@ -266,3 +266,16 @@ PurchaseLot records.
 
 Sold status SHALL be managed
 at PurchaseLot level.
+
+
+PurchaseInvoice SHALL store
+lotIds.
+
+PurchaseInvoice acts as a
+container for PurchaseLot records.
+
+Inventory state SHALL NOT be
+calculated from PurchaseInvoice.
+
+Inventory state SHALL be
+calculated from PurchaseLot.
