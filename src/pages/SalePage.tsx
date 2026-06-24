@@ -1,6 +1,17 @@
 import { useMemo, useState } from "react";
 
+import { useSaleStore } from "../stores/saleStore";
+import { SaleInvoice } from "../types/SaleInvoice";
+
 export default function SalePage() {
+  const addSale = useSaleStore(
+    (state) => state.addSale
+  );
+
+  const sales = useSaleStore(
+    (state) => state.sales
+  );
+
   const [customerName, setCustomerName] =
     useState("");
 
@@ -37,11 +48,57 @@ export default function SalePage() {
       return;
     }
 
+    const sale: SaleInvoice = {
+      id: crypto.randomUUID(),
+
+      invoiceNumber,
+
+      saleDate:
+        new Date().toISOString(),
+
+      customerName:
+        customerName || undefined,
+
+      customerPhone:
+        customerPhone || undefined,
+
+      customerId: undefined,
+
+      purchaseInvoiceIds: [],
+
+      totalWeightKg: weight
+        ? Number(weight)
+        : undefined,
+
+      ratePerKg: rate
+        ? Number(rate)
+        : undefined,
+
+      totalAmount:
+        Number(totalAmount),
+
+      notes: undefined,
+
+      createdAt:
+        new Date().toISOString(),
+
+      updatedAt:
+        new Date().toISOString(),
+
+      archived: false,
+
+      deleted: false,
+    };
+
+    addSale(sale);
+
     setError("");
 
-    alert(
-      "বিক্রয় চালান সংরক্ষণ করা হয়েছে"
-    );
+    setCustomerName("");
+    setCustomerPhone("");
+    setWeight("");
+    setRate("");
+    setTotalAmount("");
   };
 
   return (
@@ -173,6 +230,41 @@ export default function SalePage() {
       >
         বিক্রয় সংরক্ষণ
       </button>
+
+      <hr />
+
+      <h2>
+        বিক্রয় চালানসমূহ
+      </h2>
+
+      {sales.map((sale) => (
+        <div
+          key={sale.id}
+          style={{
+            border:
+              "1px solid #ccc",
+            borderRadius: 8,
+            padding: 12,
+            marginTop: 12,
+          }}
+        >
+          <div>
+            <strong>
+              {sale.invoiceNumber}
+            </strong>
+          </div>
+
+          <div>
+            টাকা: {sale.totalAmount}
+          </div>
+
+          <div>
+            ক্রেতা:{" "}
+            {sale.customerName ||
+              "N/A"}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
