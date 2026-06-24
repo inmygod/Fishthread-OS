@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 export default function PurchasePage() {
   const [supplierName, setSupplierName] =
@@ -16,9 +16,33 @@ export default function PurchasePage() {
   const [totalAmount, setTotalAmount] =
     useState("");
 
+  const [error, setError] =
+    useState("");
+
+  const invoiceNumber =
+    useMemo(() => {
+      return `PI-${Date.now()}`;
+    }, []);
+
   const calculatedAmount =
     Number(weight || 0) *
     Number(rate || 0);
+
+  const handleSave = () => {
+    if (!totalAmount.trim()) {
+      setError(
+        "মোট টাকা অবশ্যই দিতে হবে"
+      );
+
+      return;
+    }
+
+    setError("");
+
+    alert(
+      `চালান সংরক্ষণ করা হয়েছে\n${invoiceNumber}`
+    );
+  };
 
   return (
     <div
@@ -27,6 +51,12 @@ export default function PurchasePage() {
       }}
     >
       <h1>নতুন ক্রয়</h1>
+
+      <p>
+        চালান নং:
+        {" "}
+        {invoiceNumber}
+      </p>
 
       <div>
         <label>
@@ -130,7 +160,19 @@ export default function PurchasePage() {
 
       <br />
 
-      <button>
+      {error && (
+        <p
+          style={{
+            color: "red",
+          }}
+        >
+          {error}
+        </p>
+      )}
+
+      <button
+        onClick={handleSave}
+      >
         চালান সংরক্ষণ
       </button>
     </div>
